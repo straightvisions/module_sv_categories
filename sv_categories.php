@@ -21,30 +21,43 @@
 		
 		public function category_add_form_fields() {
 			$order_by = get_term_meta( $_POST['tag_ID'], '_order_by', true );
+			$order = get_term_meta( $_POST['tag_ID'], '_order', true );
 			?>
 			<div class="form-field term-order-by-wrap">
 				<label for="order_by"><?php _e( 'Order by', 'sv100_companion' ); ?></label>
 				<select name="order_by" id="order_by" class="postform">
 					<option value="date" <?php echo $order_by === 'date' ? 'selected' : ''; ?>>
-						<?php _e( 'Release date', 'sv100_companion' ); ?>
+						<?php _e( 'Date', 'sv100_companion' ); ?>
 					</option>
 					<option value="title" <?php echo $order_by === 'title' ? 'selected' : ''; ?>>
 						<?php _e( 'Title', 'sv100_companion' ); ?>
 					</option>
 				</select>
 			</div>
+            <div class="form-field term-order-wrap">
+                <label for="order_by"><?php _e( 'Order', 'sv100_companion' ); ?></label>
+                <select name="order" id="order" class="postform">
+                    <option value="DESC" <?php echo $order === 'DESC' ? 'selected' : ''; ?>>
+						<?php _e( 'Descending', 'sv100_companion' ); ?>
+                    </option>
+                    <option value="ASC" <?php echo $order === 'ASC' ? 'selected' : ''; ?>>
+						<?php _e( 'Ascending', 'sv100_companion' ); ?>
+                    </option>
+                </select>
+            </div>
 			<?php
 		}
 		
 		public function edit_category_form_fields( $term ) {
 			$order_by = get_term_meta( $term->term_id, '_order_by', true );
+			$order = get_term_meta( $term->term_id, '_order', true );
 			?>
 			<tr class="form-field term-order-by-wrap">
 				<th scope="row"><label for="order_by"><?php _e( 'Order by', 'sv100_companion' ); ?></label></th>
 				<td>
 					<select name="order_by" id="order_by" class="postform">
 						<option value="date" <?php echo $order_by === 'date' ? 'selected' : ''; ?>>
-							<?php _e( 'Release date', 'sv100_companion' ); ?>
+							<?php _e( 'Date', 'sv100_companion' ); ?>
 						</option>
 						<option value="title" <?php echo $order_by === 'title' ? 'selected' : ''; ?>>
 							<?php _e( 'Title', 'sv100_companion' ); ?>
@@ -52,12 +65,29 @@
 					</select>
 				</td>
 			</tr>
+            <tr class="form-field term-order-wrap">
+                <th scope="row"><label for="order"><?php _e( 'Order', 'sv100_companion' ); ?></label></th>
+                <td>
+                    <select name="order" id="order" class="postform">
+                        <option value="DESC" <?php echo $order === 'DESC' ? 'selected' : ''; ?>>
+							<?php _e( 'Descending', 'sv100_companion' ); ?>
+                        </option>
+                        <option value="ASC" <?php echo $order === 'ASC' ? 'selected' : ''; ?>>
+							<?php _e( 'Ascending', 'sv100_companion' ); ?>
+                        </option>
+                    </select>
+                </td>
+            </tr>
 			<?php
 		}
 		
 		public function edited_category() {
 			if ( isset( $_POST['order_by'] ) ) {
 				update_term_meta( $_POST['tag_ID'], '_order_by', $_POST['order_by'] );
+			}
+			
+			if ( isset( $_POST['order'] ) ) {
+				update_term_meta( $_POST['tag_ID'], '_order', $_POST['order'] );
 			}
 		}
 	}
