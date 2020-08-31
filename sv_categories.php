@@ -13,13 +13,19 @@
 	
 	class sv_categories extends modules {
 		public function init() {
-			add_action( 'edit_category_form_fields', array( $this, 'edit_category_form_fields' ) );
-			add_action( 'edited_category', array( $this, 'edited_category' ) );
+			add_action('init', function(){
+				// filter name: sv100_companion_modules_sv_categories_custom_fields
+				foreach(apply_filters($this->get_prefix('custom_fields'), array('category')) as $taxonomy){
+					add_action( $taxonomy.'_edit_form_fields', array( $this, 'edit_category_form_fields' ) );
+					add_action( 'edited_'.$taxonomy, array( $this, 'edited_category' ) );
+				}
+			});
 		}
 
 		public function edit_category_form_fields( $term ) {
-			$order_by = get_term_meta( $term->term_id, $this->get_prefix( 'order_by' ), true );
-			$order = get_term_meta( $term->term_id, $this->get_prefix( 'order' ), true );
+			$order_by	= get_term_meta( $term->term_id, $this->get_prefix( 'order_by' ), true );
+			$order		= get_term_meta( $term->term_id, $this->get_prefix( 'order' ), true );
+			$page		= get_term_meta( $term->term_id, $this->get_prefix( 'page' ), true );
 			?>
 			<tr class="form-field term-<?php echo $this->get_prefix( 'order_by' ); ?>-wrap">
 				<th scope="row"><label for="<?php echo $this->get_prefix( 'order_by' ); ?>"><?php _e( 'Order by', 'sv100_companion' ); ?></label></th>
@@ -47,6 +53,21 @@
                     </select>
                 </td>
             </tr>
+			<!--
+			<tr class="form-field term-<?php echo $this->get_prefix( 'page' ); ?>-wrap">
+				<th scope="row"><label for="<?php echo $this->get_prefix( 'page' ); ?>"><?php _e( 'Page', 'sv100_companion' ); ?></label></th>
+				<td>
+					<?php wp_dropdown_pages(array(
+						'name'		=> $this->get_prefix( 'page' ),
+						'id'		=> $this->get_prefix( 'page' ),
+						'class'		=> 'postform',
+						'selected'	=> $page,
+						'show_option_none'		=> __('--- Default Archive Index ---')
+					)); ?>
+					<p class="description">Selected Page will be shown instead of archive.</p>
+				</td>
+			</tr>
+			-->
 			<?php
 		}
 		
@@ -58,5 +79,10 @@
 			if ( isset( $_POST[ $this->get_prefix( 'order' ) ] ) ) {
 				update_term_meta( $_POST['tag_ID'], $this->get_prefix( 'order' ), $_POST[ $this->get_prefix( 'order' ) ] );
 			}
+/*
+			if ( isset( $_POST[ $this->get_prefix( 'page' ) ] ) ) {
+				update_term_meta( $_POST['tag_ID'], $this->get_prefix( 'page' ), $_POST[ $this->get_prefix( 'page' ) ] );
+			}
+*/
 		}
 	}
