@@ -24,6 +24,12 @@
 			});
 		}
 
+		public function get_template_style(): string{
+			$template_style = get_term_meta( get_queried_object_id(), $this->get_prefix( 'template_style' ), true );
+
+			return $template_style ? $template_style : '';
+		}
+
 		public function edit_category_form_fields( $term ) {
 			$order_by			= get_term_meta( $term->term_id, $this->get_prefix( 'order_by' ), true );
 			$order				= get_term_meta( $term->term_id, $this->get_prefix( 'order' ), true );
