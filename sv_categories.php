@@ -14,7 +14,7 @@
 	class sv_categories extends modules {
 		public function init() {
 			add_action('init', function(){
-				// filter name: sv100_companion_modules_sv_categories_custom_fields
+				// filter name: sv100_companion_sv_categories_custom_fields
 				foreach(apply_filters($this->get_prefix('custom_fields'), array('category')) as $taxonomy){
 					add_action( $taxonomy.'_edit_form_fields', array( $this, 'edit_category_form_fields' ) );
 					add_action( $taxonomy.'_add_form_fields', array( $this, 'edit_category_form_fields' ) );
