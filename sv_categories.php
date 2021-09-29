@@ -18,10 +18,21 @@
 				foreach(apply_filters($this->get_prefix('custom_fields'), array('category')) as $taxonomy){
 					add_action( $taxonomy.'_edit_form_fields', array( $this, 'edit_category_form_fields' ) );
 					add_action( $taxonomy.'_add_form_fields', array( $this, 'edit_category_form_fields' ) );
-
 					add_action( 'edited_'.$taxonomy, array( $this, 'edited_category' ) );
 				}
 			});
+
+			add_action( 'pre_get_posts', array($this, 'pre_get_posts') );
+		}
+
+		public function pre_get_posts($query){
+			$order_by		= get_term_meta(get_queried_object_id(), 'sv100_companion_sv_categories_order_by', true);
+			$order			= get_term_meta(get_queried_object_id(), 'sv100_companion_sv_categories_order', true);
+
+			if( $query->is_main_query() && ! is_admin() && $order_by && $order ) {
+				$query->set( 'orderby', $order_by );
+				$query->set( 'order', $order );
+			}
 		}
 
 		public function get_template_style(): string{
