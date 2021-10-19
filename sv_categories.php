@@ -22,7 +22,9 @@
 				}
 			});
 
-			add_action( 'pre_get_posts', array($this, 'pre_get_posts') );
+			if(!is_admin()){
+				add_action( 'pre_get_posts', array($this, 'pre_get_posts') );
+			}
 		}
 
 		public function pre_get_posts($query){
