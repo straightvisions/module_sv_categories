@@ -87,6 +87,9 @@
 
 									if(is_array($extra_styles) && count($extra_styles) > 0){
 										foreach($extra_styles as $extra_style){
+											if(!isset($extra_style['entry_label']) || strlen($extra_style['entry_label']) === 0){
+												continue;
+											}
 											?>
 											<option value="<?php echo $extra_style['slug']; ?>" <?php echo $template_style === $extra_style['slug'] ? 'selected' : ''; ?>><?php echo $extra_style['entry_label']; ?></option>
 											<?php
